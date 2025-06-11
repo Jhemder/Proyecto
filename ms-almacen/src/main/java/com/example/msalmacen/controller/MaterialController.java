@@ -1,6 +1,7 @@
 package com.example.msalmacen.controller;
 
-import com.example.msalmacen.entity.Material;
+import com.example.msalmacen.dto.MaterialRequestDTO;
+import com.example.msalmacen.dto.MaterialResponseDTO;
 import com.example.msalmacen.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,40 +13,38 @@ import java.util.List;
 public class MaterialController {
 
     @Autowired
-    private MaterialService materialService;
+    private MaterialService service;
 
     @PostMapping
-    public Material agregar(@RequestBody Material material) {
-        return materialService.agregarMaterial(material);
-    }
-
-    @GetMapping
-    public List<Material> listar() {
-        return materialService.listarMateriales();
-    }
-
-    @GetMapping("/{id}")
-    public Material obtener(@PathVariable Long id) {
-        return materialService.obtenerPorId(id);
+    public MaterialResponseDTO agregar(@RequestBody MaterialRequestDTO dto) {
+        return service.agregar(dto);
     }
 
     @PutMapping("/{id}")
-    public Material actualizar(@PathVariable Long id, @RequestBody Material material) {
-        return materialService.actualizarMaterial(id, material);
+    public MaterialResponseDTO actualizar(@PathVariable Long id, @RequestBody MaterialRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
-        materialService.eliminarMaterial(id);
+        service.eliminar(id);
+    }
+
+    @GetMapping
+    public List<MaterialResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public MaterialResponseDTO obtener(@PathVariable Long id) {
+        return service.obtenerPorId(id);
     }
 
     @PostMapping("/descontar")
-    public boolean descontarMaterial(
-            @RequestParam String nombre,
-            @RequestParam String tipo,
-            @RequestParam String color,
-            @RequestParam double cantidad
-    ) {
-        return materialService.descontarMaterial(nombre, tipo, color, cantidad);
+    public boolean descontar(@RequestParam String nombre,
+                             @RequestParam String tipo,
+                             @RequestParam String color,
+                             @RequestParam double cantidad) {
+        return service.descontarMaterial(nombre, tipo, color, cantidad);
     }
 }

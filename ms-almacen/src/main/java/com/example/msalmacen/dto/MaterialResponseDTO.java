@@ -1,21 +1,14 @@
-package com.example.msalmacen.entity;
+package com.example.msalmacen.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "materiales")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Material {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MaterialResponseDTO {
     private Long id;
-
     private String nombre;
     private String tipo;
     private String color;
