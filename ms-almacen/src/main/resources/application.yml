@@ -1,5 +1,7 @@
 spring:
-application:
-name: ms-almacen-service
-config:
-import: optional:configserver:http://localhost:7070
+  application:
+    name: ms-almacen-service
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://root:123456@localhost:7070
