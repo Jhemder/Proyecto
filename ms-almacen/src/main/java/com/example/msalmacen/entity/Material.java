@@ -40,5 +40,5 @@ public class Material {
     @Column(length = 20)
     private String unidadMedida;
 
-    private Double stockDisponible; // NUEVO: Cantidad disponible en almacén (en la unidad definida)
+    private Double stockDisponible;
 }
