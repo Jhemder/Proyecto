@@ -12,15 +12,27 @@ import java.util.List;
 @RequestMapping("/api/materiales")
 @RequiredArgsConstructor
 public class MaterialController {
+
     private final MaterialService service;
 
-    @PostMapping
-    public ResponseEntity<Material> save(@RequestBody Material m) {
-        return ResponseEntity.ok(service.save(m));
+    @GetMapping
+    public ResponseEntity<List<Material>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
-    @GetMapping
-    public ResponseEntity<List<Material>> all() {
-        return ResponseEntity.ok(service.findAll());
+    @PostMapping
+    public ResponseEntity<Material> guardar(@RequestBody Material material) {
+        return ResponseEntity.ok(service.guardar(material));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Material> actualizar(@PathVariable Long id, @RequestBody Material material) {
+        return ResponseEntity.ok(service.actualizar(id, material));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

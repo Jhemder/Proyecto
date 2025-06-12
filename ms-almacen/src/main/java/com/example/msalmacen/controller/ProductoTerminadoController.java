@@ -29,5 +29,6 @@ public class ProductoTerminadoController {
             @PathVariable int year,
             @PathVariable int month) {
         return ResponseEntity.ok(service.listarPorMes(year, month));
+
     }
 }

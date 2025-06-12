@@ -6,22 +6,42 @@ import com.example.msalmacen.service.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MaterialServiceImpl implements MaterialService {
-    private final MaterialRepository repo;
+
+    private final MaterialRepository repository;
 
     @Override
-    public Material save(Material m) {
-        return repo.findByNombreAndTipoAndUnidad(m.getNombre(), m.getTipo(), m.getUnidad())
-                .map(existing -> {
-                    existing.setCantidad(existing.getCantidad() + m.getCantidad());
-                    return repo.save(existing);
-                }).orElse(repo.save(m));
+    public List<Material> listar() {
+        return repository.findAll();
     }
 
     @Override
-    public List<Material> findAll() {
-        return repo.findAll();
+    public Material guardar(Material material) {
+        return repository.findByNombreIgnoreCase(material.getNombre())
+                .map(existing -> {
+                    existing.setCantidad(existing.getCantidad() + material.getCantidad());
+                    return repository.save(existing);
+                })
+                .orElse(repository.save(material));
+    }
+
+    @Override
+    public Material actualizar(Long id, Material material) {
+        Material mat = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Material no encontrado"));
+        mat.setNombre(material.getNombre());
+        mat.setTipo(material.getTipo());
+        mat.setUnidad(material.getUnidad());
+        mat.setCantidad(material.getCantidad());
+        return repository.save(mat);
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        repository.deleteById(id);
     }
 }

@@ -40,8 +40,5 @@ spring:
         - id: ms-almacen-service
           uri: lb://ms-almacen-service
           predicates:
-            - Path=/api/materiales/**
-        - id: ms-almacen-service
-          uri: lb://ms-almacen-service
-          predicates:
-            - Path=/api/productos-terminados/**
+            - Path=/api/materiales/**, /api/productos-terminados/**
+
