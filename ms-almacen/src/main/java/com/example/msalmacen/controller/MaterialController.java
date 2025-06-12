@@ -1,5 +1,6 @@
 package com.example.msalmacen.controller;
 
+import com.example.msalmacen.dto.MaterialDTO;
 import com.example.msalmacen.entity.Material;
 import com.example.msalmacen.service.MaterialService;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MaterialController {
 
-    private final MaterialService service;
+    private final MaterialService materialService;
 
+    // POST - Agregar o sumar material existente
+    @PostMapping
+    public ResponseEntity<Material> agregarMaterial(@RequestBody MaterialDTO dto) {
+        return ResponseEntity.ok(materialService.crearOActualizarMaterial(dto));
+    }
+
+    // GET - Listar materiales disponibles
     @GetMapping
     public ResponseEntity<List<Material>> listar() {
-        return ResponseEntity.ok(service.listar());
-    }
-
-    @PostMapping
-    public ResponseEntity<Material> guardar(@RequestBody Material material) {
-        return ResponseEntity.ok(service.guardar(material));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Material> actualizar(@PathVariable Long id, @RequestBody Material material) {
-        return ResponseEntity.ok(service.actualizar(id, material));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        service.eliminar(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(materialService.listarMateriales());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.msalmacen.controller;
 
+import com.example.msalmacen.dto.ProductoTerminadoDTO;
 import com.example.msalmacen.entity.ProductoTerminado;
 import com.example.msalmacen.service.ProductoTerminadoService;
 import lombok.RequiredArgsConstructor;
@@ -13,21 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductoTerminadoController {
 
-    private final ProductoTerminadoService service;
+    private final ProductoTerminadoService productoTerminadoService;
 
-    @GetMapping
-    public ResponseEntity<List<ProductoTerminado>> listar() {
-        return ResponseEntity.ok(service.listar());
-    }
-
+    // POST - Fabricar un producto terminado
     @PostMapping
-    public ResponseEntity<ProductoTerminado> crear(@RequestBody ProductoTerminado producto) {
-        return ResponseEntity.ok(service.crear(producto));
+    public ResponseEntity<ProductoTerminado> fabricarProducto(@RequestBody ProductoTerminadoDTO dto) {
+        return ResponseEntity.ok(productoTerminadoService.crearProductoTerminado(dto));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        service.eliminar(id);
-        return ResponseEntity.noContent().build();
+    // GET - Listar productos terminados
+    @GetMapping
+    public ResponseEntity<List<ProductoTerminado>> listarProductos() {
+        return ResponseEntity.ok(productoTerminadoService.listarProductosTerminados());
     }
 }

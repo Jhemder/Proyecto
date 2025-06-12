@@ -1,5 +1,6 @@
 package com.example.msalmacen.service.impl;
 
+import com.example.msalmacen.dto.MaterialDTO;
 import com.example.msalmacen.entity.Material;
 import com.example.msalmacen.repository.MaterialRepository;
 import com.example.msalmacen.service.MaterialService;
@@ -12,36 +13,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MaterialServiceImpl implements MaterialService {
 
-    private final MaterialRepository repository;
+    private final MaterialRepository materialRepository;
 
     @Override
-    public List<Material> listar() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Material guardar(Material material) {
-        return repository.findByNombreIgnoreCase(material.getNombre())
-                .map(existing -> {
-                    existing.setCantidad(existing.getCantidad() + material.getCantidad());
-                    return repository.save(existing);
+    public Material crearOActualizarMaterial(MaterialDTO dto) {
+        return materialRepository.findByNombreIgnoreCase(dto.getNombre())
+                .map(materialExistente -> {
+                    materialExistente.setCantidad(materialExistente.getCantidad() + dto.getCantidad());
+                    return materialRepository.save(materialExistente);
                 })
-                .orElse(repository.save(material));
+                .orElseGet(() -> {
+                    Material nuevo = Material.builder()
+                            .nombre(dto.getNombre())
+                            .tipo(dto.getTipo())
+                            .unidadMedida(dto.getUnidadMedida())
+                            .cantidad(dto.getCantidad())
+                            .build();
+                    return materialRepository.save(nuevo);
+                });
     }
 
     @Override
-    public Material actualizar(Long id, Material material) {
-        Material mat = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Material no encontrado"));
-        mat.setNombre(material.getNombre());
-        mat.setTipo(material.getTipo());
-        mat.setUnidad(material.getUnidad());
-        mat.setCantidad(material.getCantidad());
-        return repository.save(mat);
-    }
-
-    @Override
-    public void eliminar(Long id) {
-        repository.deleteById(id);
+    public List<Material> listarMateriales() {
+        return materialRepository.findAll();
     }
 }

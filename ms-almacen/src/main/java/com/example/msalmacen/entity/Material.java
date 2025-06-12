@@ -9,12 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Material {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;
-    private String tipo; // Tela, hilo, cremallera, etc.
-    private String unidad; // metros, unidades, rollos
-    private Double cantidad;
+    private String tipo; // Ej: tela, hilo
+    private String unidadMedida; // Ej: metros, unidades
+    private Double cantidad; // Stock disponible
 }
