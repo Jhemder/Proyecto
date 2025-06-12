@@ -41,10 +41,8 @@ public class MaterialController {
     }
 
     @PostMapping("/descontar")
-    public boolean descontar(@RequestParam String nombre,
-                             @RequestParam String tipo,
-                             @RequestParam String color,
-                             @RequestParam double cantidad) {
-        return service.descontarMaterial(nombre, tipo, color, cantidad);
+    public boolean descontar(@RequestBody MaterialRequestDTO dto) {
+        return service.descontarMaterial(dto.getNombre(), dto.getTipo(), dto.getColor(), dto.getCantidad());
     }
+
 }

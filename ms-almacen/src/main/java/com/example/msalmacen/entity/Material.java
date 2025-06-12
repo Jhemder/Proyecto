@@ -5,8 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "materiales")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,11 +15,17 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String tipo;
+    private String nombre; // ejemplo: Tela, Cremallera
+
+    private String tipo; // ejemplo: Algodón, Nailon
+
     private String color;
-    private String unidadMedida;
-    private Double cantidad;
+
+    private String unidadMedida; // metros, unidades, rollos, etc
+
+    private Double cantidad; // cantidad total disponible
+
     private Double costoUnitario;
+
     private String proveedor;
 }
