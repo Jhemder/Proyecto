@@ -1,23 +1,22 @@
 package com.example.msalmacen.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Table(name="producto_terminado", uniqueConstraints = @UniqueConstraint(
+        columnNames = {"nombre", "fechaFabricacion"}
+))
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ProductoTerminado {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nombre;
-    private String categoria;
-    private String unidad;
-    private int cantidad;
-
-    // Opcional: para luego filtrar por fecha de creación
-    private String fechaRegistro;
+    private LocalDate fechaFabricacion;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<MaterialUtilizado> materialesUtilizados;
+    private Integer cantidadFabricada;  // total cantidad de este producto
 }

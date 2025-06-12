@@ -3,6 +3,7 @@ package com.example.msalmacen.controller;
 import com.example.msalmacen.entity.ProductoTerminado;
 import com.example.msalmacen.service.ProductoTerminadoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,26 +12,22 @@ import java.util.List;
 @RequestMapping("/api/productos-terminados")
 @RequiredArgsConstructor
 public class ProductoTerminadoController {
-
     private final ProductoTerminadoService service;
 
-    @GetMapping
-    public List<ProductoTerminado> listar() {
-        return service.listar();
-    }
-
     @PostMapping
-    public ProductoTerminado guardar(@RequestBody ProductoTerminado producto) {
-        return service.guardar(producto);
+    public ResponseEntity<ProductoTerminado> fabricar(@RequestBody ProductoTerminado p) {
+        return ResponseEntity.ok(service.fabricar(p));
     }
 
-    @PutMapping("/{id}")
-    public ProductoTerminado actualizar(@PathVariable Long id, @RequestBody ProductoTerminado producto) {
-        return service.actualizar(id, producto);
+    @GetMapping
+    public ResponseEntity<List<ProductoTerminado>> all() {
+        return ResponseEntity.ok(service.listarTodos());
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @GetMapping("/mes/{year}/{month}")
+    public ResponseEntity<List<ProductoTerminado>> mes(
+            @PathVariable int year,
+            @PathVariable int month) {
+        return ResponseEntity.ok(service.listarPorMes(year, month));
     }
 }
