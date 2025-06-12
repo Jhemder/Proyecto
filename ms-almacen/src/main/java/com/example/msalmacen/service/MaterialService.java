@@ -14,4 +14,8 @@ public interface MaterialService {
 
     // Método para descontar material
     boolean descontarMaterial(String nombre, String tipo, String color, double cantidad);
+    boolean descontarMateriales(List<MaterialRequestDTO> materiales); // nuevo método
+
+
+
 }

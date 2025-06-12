@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
@@ -73,6 +74,15 @@ public class MaterialServiceImpl implements MaterialService {
         }
         return false;
     }
+    @Override
+    public boolean descontarMateriales(List<MaterialRequestDTO> materiales) {
+        for (MaterialRequestDTO dto : materiales) {
+            boolean exito = descontarMaterial(dto.getNombre(), dto.getTipo(), dto.getColor(), dto.getCantidad());
+            if (!exito) return false;
+        }
+        return true;
+    }
+
 
     private MaterialResponseDTO toDto(Material material) {
         return MaterialResponseDTO.builder()
@@ -86,4 +96,5 @@ public class MaterialServiceImpl implements MaterialService {
                 .proveedor(material.getProveedor())
                 .build();
     }
+
 }

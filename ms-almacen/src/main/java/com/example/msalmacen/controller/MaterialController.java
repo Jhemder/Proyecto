@@ -45,4 +45,10 @@ public class MaterialController {
     public boolean descontar(@RequestBody MaterialRequestDTO dto) {
         return service.descontarMaterial(dto.getNombre(), dto.getTipo(), dto.getColor(), dto.getCantidad());
     }
+    @PostMapping("/descontar-lote")
+    public boolean descontarLote(@RequestBody List<MaterialRequestDTO> materiales) {
+        return service.descontarMateriales(materiales);
+    }
+
+
 }

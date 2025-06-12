@@ -13,7 +13,11 @@ public class ProductoController {
 
     @PostMapping("/producir")
     public String producirProducto() {
-        productoService.producirProducto();
-        return "Producción completada.";
+        try {
+            productoService.producirProducto();
+            return "✅ Producto producido con éxito";
+        } catch (Exception e) {
+            return "❌ Error al producir producto: " + e.getMessage();
+        }
     }
 }

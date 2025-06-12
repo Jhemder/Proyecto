@@ -5,9 +5,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "ms-almacen", url = "http://localhost:8081")
+import java.util.List;
+
+// Usa el nombre del servicio registrado en Eureka
+@FeignClient(name = "ms-almacen-service")
 public interface AlmacenClient {
 
     @PostMapping("/api/materiales/descontar")
-    boolean descontarMaterial(@RequestBody MaterialRequestDTO dto);
+    boolean descontarMateriales(@RequestBody List<MaterialRequestDTO> materiales);
 }
