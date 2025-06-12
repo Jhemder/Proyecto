@@ -11,14 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductoTerminado {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;
-    private String descripcion;
+    private Integer cantidadFabricada;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<MaterialUso> materialesUsados;
+    @ElementCollection
+    private List<MaterialUtilizado> materialesUtilizados;
 }
