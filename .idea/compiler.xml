@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ms-config-server" />
         <module name="auth-service" />
-        <module name="ms-almacen" />
         <module name="ms-registry-server" />
         <module name="ms-gateway-service" />
       </profile>
@@ -20,6 +19,18 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="ms_catalogo" />
+      </profile>
+      <profile name="Annotation profile for ms-almacen" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-maven-plugin/unknown/spring-boot-maven-plugin-unknown.jar" />
+        </processorPath>
+        <module name="ms-almacen" />
       </profile>
     </annotationProcessing>
   </component>
