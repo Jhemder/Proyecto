@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.example.msproductoterminadoservice.feign")
+@EnableFeignClients(basePackages = "com.example.msproductoterminadoservice.client")
 public class MsProductoTerminadoApplication {
     public static void main(String[] args) {
         SpringApplication.run(MsProductoTerminadoApplication.class, args);

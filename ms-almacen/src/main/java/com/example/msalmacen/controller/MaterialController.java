@@ -40,9 +40,9 @@ public class MaterialController {
         return service.obtenerPorId(id);
     }
 
+    // ✅ Refactor aquí: usamos @RequestBody en lugar de @RequestParam
     @PostMapping("/descontar")
     public boolean descontar(@RequestBody MaterialRequestDTO dto) {
         return service.descontarMaterial(dto.getNombre(), dto.getTipo(), dto.getColor(), dto.getCantidad());
     }
-
 }

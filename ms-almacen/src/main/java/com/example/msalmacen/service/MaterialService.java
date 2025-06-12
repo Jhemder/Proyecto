@@ -11,5 +11,7 @@ public interface MaterialService {
     void eliminar(Long id);
     List<MaterialResponseDTO> listar();
     MaterialResponseDTO obtenerPorId(Long id);
+
+    // Método para descontar material
     boolean descontarMaterial(String nombre, String tipo, String color, double cantidad);
 }
