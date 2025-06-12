@@ -3,11 +3,12 @@ package com.example.msalmacen.entity;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Embeddable
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class MaterialUtilizado {
-    private String nombre;
-    private String tipo;
-    private String unidad;
-    private Double cantidad;
+    private String nombre;      // "Tela Lycra"
+    private Double cantidad;    // 2.0
 }
