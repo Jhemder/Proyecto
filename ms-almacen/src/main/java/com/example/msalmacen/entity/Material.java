@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Table(name = "materiales")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -15,7 +17,8 @@ public class Material {
     private Long id;
 
     private String nombre;
-    private String tipo; // Ej: tela, hilo
-    private String unidadMedida; // Ej: metros, unidades
-    private Double cantidad; // Stock disponible
+
+    private String tipo;
+
+    private Integer stock;
 }

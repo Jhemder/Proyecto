@@ -6,7 +6,9 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Data
+@Table(name = "productos_terminados")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,8 +19,14 @@ public class ProductoTerminado {
     private Long id;
 
     private String nombre;
+
     private String descripcion;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<MaterialUso> materialesUsados;
+    @ManyToMany
+    @JoinTable(
+            name = "producto_material",
+            joinColumns = @JoinColumn(name = "producto_id"),
+            inverseJoinColumns = @JoinColumn(name = "material_id")
+    )
+    private List<Material> materialesUsados;
 }

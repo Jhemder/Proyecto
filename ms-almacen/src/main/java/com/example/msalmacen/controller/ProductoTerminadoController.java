@@ -1,30 +1,41 @@
 package com.example.msalmacen.controller;
 
 import com.example.msalmacen.dto.ProductoTerminadoDTO;
-import com.example.msalmacen.entity.ProductoTerminado;
 import com.example.msalmacen.service.ProductoTerminadoService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/productos-terminados")
-@RequiredArgsConstructor
 public class ProductoTerminadoController {
 
-    private final ProductoTerminadoService productoTerminadoService;
+    @Autowired
+    private ProductoTerminadoService productoService;
 
-    // POST - Fabricar un producto terminado
-    @PostMapping
-    public ResponseEntity<ProductoTerminado> fabricarProducto(@RequestBody ProductoTerminadoDTO dto) {
-        return ResponseEntity.ok(productoTerminadoService.crearProductoTerminado(dto));
+    @GetMapping
+    public List<ProductoTerminadoDTO> listarTodos() {
+        return productoService.obtenerTodos();
     }
 
-    // GET - Listar productos terminados
-    @GetMapping
-    public ResponseEntity<List<ProductoTerminado>> listarProductos() {
-        return ResponseEntity.ok(productoTerminadoService.listarProductosTerminados());
+    @GetMapping("/{id}")
+    public ProductoTerminadoDTO obtenerPorId(@PathVariable Long id) {
+        return productoService.obtenerPorId(id);
+    }
+
+    @PostMapping
+    public ProductoTerminadoDTO crear(@RequestBody ProductoTerminadoDTO dto) {
+        return productoService.crear(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ProductoTerminadoDTO actualizar(@PathVariable Long id, @RequestBody ProductoTerminadoDTO dto) {
+        return productoService.actualizar(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        productoService.eliminar(id);
     }
 }

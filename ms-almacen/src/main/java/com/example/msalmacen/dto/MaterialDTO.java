@@ -1,14 +1,12 @@
 package com.example.msalmacen.dto;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class MaterialDTO {
+    private Long id;
     private String nombre;
-    private String tipo;            // Ej: tela, hilo, botón
-    private String unidadMedida;    // Ej: metros, unidades
-    private Double cantidad;        // Cantidad a ingresar o sumar
+    private String tipo;
+    private Integer stock;
 }
+

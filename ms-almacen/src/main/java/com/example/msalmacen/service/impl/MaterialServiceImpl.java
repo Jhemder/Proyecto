@@ -4,37 +4,46 @@ import com.example.msalmacen.dto.MaterialDTO;
 import com.example.msalmacen.entity.Material;
 import com.example.msalmacen.repository.MaterialRepository;
 import com.example.msalmacen.service.MaterialService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class MaterialServiceImpl implements MaterialService {
 
-    private final MaterialRepository materialRepository;
+    @Autowired
+    private MaterialRepository materialRepository;
 
     @Override
-    public Material crearOActualizarMaterial(MaterialDTO dto) {
-        return materialRepository.findByNombreIgnoreCase(dto.getNombre())
-                .map(materialExistente -> {
-                    materialExistente.setCantidad(materialExistente.getCantidad() + dto.getCantidad());
-                    return materialRepository.save(materialExistente);
-                })
-                .orElseGet(() -> {
-                    Material nuevo = Material.builder()
-                            .nombre(dto.getNombre())
-                            .tipo(dto.getTipo())
-                            .unidadMedida(dto.getUnidadMedida())
-                            .cantidad(dto.getCantidad())
-                            .build();
-                    return materialRepository.save(nuevo);
-                });
+    public List<MaterialDTO> listarMateriales() {
+        return materialRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Material> listarMateriales() {
-        return materialRepository.findAll();
+    public MaterialDTO obtenerMaterialPorId(Long id) {
+        return materialRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public MaterialDTO registrarMaterial(MaterialDTO materialDTO) {
+        Material material = new Material();
+        material.setNombre(materialDTO.getNombre());
+        material.setDescripcion(materialDTO.getDescripcion());
+        return convertToDTO(materialRepository.save(material));
+    }
+
+    private MaterialDTO convertToDTO(Material material) {
+        MaterialDTO dto = new MaterialDTO();
+        dto.setId(material.getId());
+        dto.setNombre(material.getNombre());
+        dto.setDescripcion(material.getDescripcion());
+        return dto;
     }
 }

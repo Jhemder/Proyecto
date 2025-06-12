@@ -1,71 +1,83 @@
 package com.example.msalmacen.service.impl;
 
-import com.example.msalmacen.dto.MaterialUsoDTO;
+import com.example.msalmacen.dto.MaterialDTO;
 import com.example.msalmacen.dto.ProductoTerminadoDTO;
 import com.example.msalmacen.entity.Material;
-import com.example.msalmacen.entity.MaterialUso;
 import com.example.msalmacen.entity.ProductoTerminado;
 import com.example.msalmacen.repository.MaterialRepository;
-import com.example.msalmacen.repository.MaterialUsoRepository;
 import com.example.msalmacen.repository.ProductoTerminadoRepository;
 import com.example.msalmacen.service.ProductoTerminadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductoTerminadoServiceImpl implements ProductoTerminadoService {
 
-    private final ProductoTerminadoRepository productoRepo;
-    private final MaterialRepository materialRepo;
-    private final MaterialUsoRepository materialUsoRepo;
+    private final ProductoTerminadoRepository productoRepository;
+    private final MaterialRepository materialRepository;
 
     @Override
-    public ProductoTerminado crearProductoTerminado(ProductoTerminadoDTO dto) {
-        List<MaterialUso> materialesUsados = new ArrayList<>();
-
-        for (MaterialUsoDTO usoDTO : dto.getMaterialesUsados()) {
-            Material material = materialRepo.findById(usoDTO.getMaterialId())
-                    .orElseThrow(() -> new RuntimeException("Material no encontrado con ID: " + usoDTO.getMaterialId()));
-
-            if (material.getCantidad() < usoDTO.getCantidadUsada()) {
-                throw new RuntimeException("Stock insuficiente para el material: " + material.getNombre());
-            }
-
-            // Descontamos el stock
-            material.setCantidad(material.getCantidad() - usoDTO.getCantidadUsada());
-            materialRepo.save(material);
-
-            MaterialUso uso = MaterialUso.builder()
-                    .material(material)
-                    .cantidadUsada(usoDTO.getCantidadUsada())
-                    .build();
-
-            materialesUsados.add(uso);
-        }
-
-        ProductoTerminado producto = ProductoTerminado.builder()
-                .nombre(dto.getNombre())
-                .descripcion(dto.getDescripcion())
-                .materialesUsados(new ArrayList<>())
-                .build();
-
-        ProductoTerminado productoGuardado = productoRepo.save(producto);
-
-        for (MaterialUso uso : materialesUsados) {
-            uso.setProducto(productoGuardado);
-            materialUsoRepo.save(uso);
-        }
-
-        productoGuardado.setMaterialesUsados(materialUsoRepo.findByProductoId(productoGuardado.getId()));
-        return productoGuardado;
+    public List<ProductoTerminadoDTO> listarProductos() {
+        return productoRepository.findAll().stream().map(producto -> {
+            ProductoTerminadoDTO dto = new ProductoTerminadoDTO();
+            dto.setId(producto.getId());
+            dto.setNombre(producto.getNombre());
+            dto.setDescripcion(producto.getDescripcion());
+            dto.setMaterialesUsados(
+                    producto.getMaterialesUsados().stream()
+                            .map(mat -> new MaterialDTO(mat.getId(), mat.getNombre(), mat.getTipo()))
+                            .collect(Collectors.toList())
+            );
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductoTerminado> listarProductosTerminados() {
-        return productoRepo.findAll();
+    public ProductoTerminadoDTO guardarProducto(ProductoTerminadoDTO dto) {
+        ProductoTerminado producto = new ProductoTerminado();
+        producto.setNombre(dto.getNombre());
+        producto.setDescripcion(dto.getDescripcion());
+
+        // Extraer IDs
+        List<Long> materialIds = dto.getMaterialesUsados().stream()
+                .map(MaterialDTO::getId)
+                .collect(Collectors.toList());
+
+        // Buscar entidades por ID
+        List<Material> materiales = materialRepository.findAllById(materialIds);
+        producto.setMaterialesUsados(materiales);
+
+        // Guardar producto
+        ProductoTerminado saved = productoRepository.save(producto);
+
+        // Retornar DTO actualizado
+        dto.setId(saved.getId());
+        return dto;
+    }
+
+    @Override
+    public Optional<ProductoTerminadoDTO> obtenerProductoPorId(Long id) {
+        return productoRepository.findById(id).map(producto -> {
+            ProductoTerminadoDTO dto = new ProductoTerminadoDTO();
+            dto.setId(producto.getId());
+            dto.setNombre(producto.getNombre());
+            dto.setDescripcion(producto.getDescripcion());
+            dto.setMaterialesUsados(
+                    producto.getMaterialesUsados().stream()
+                            .map(mat -> new MaterialDTO(mat.getId(), mat.getNombre(), mat.getTipo()))
+                            .collect(Collectors.toList())
+            );
+            return dto;
+        });
+    }
+
+    @Override
+    public void eliminarProducto(Long id) {
+        productoRepository.deleteById(id);
     }
 }
