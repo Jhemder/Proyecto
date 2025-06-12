@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ms-config-server" />
         <module name="auth-service" />
+        <module name="ms-almacen" />
         <module name="ms-registry-server" />
         <module name="ms-gateway-service" />
       </profile>
@@ -25,6 +26,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
+      <module name="ms-almacen" options="-parameters" />
       <module name="ms-config-server" options="-parameters" />
       <module name="ms-gateway-service" options="-parameters" />
       <module name="ms-registry-server" options="-parameters" />

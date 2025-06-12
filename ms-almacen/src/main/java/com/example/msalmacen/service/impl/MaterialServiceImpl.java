@@ -21,13 +21,15 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Material guardar(Material material) {
-        return repository.findByNombreIgnoreCase(material.getNombre())
+        return repository.findByNombreIgnoreCaseAndTipoIgnoreCaseAndUnidadIgnoreCase(
+                        material.getNombre(), material.getTipo(), material.getUnidad())
                 .map(existing -> {
                     existing.setCantidad(existing.getCantidad() + material.getCantidad());
                     return repository.save(existing);
                 })
                 .orElse(repository.save(material));
     }
+
 
     @Override
     public Material actualizar(Long id, Material material) {

@@ -3,7 +3,6 @@ package com.example.msalmacen.controller;
 import com.example.msalmacen.entity.ProductoTerminado;
 import com.example.msalmacen.service.ProductoTerminadoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +15,22 @@ public class ProductoTerminadoController {
     private final ProductoTerminadoService service;
 
     @GetMapping
-    public ResponseEntity<List<ProductoTerminado>> listar() {
-        return ResponseEntity.ok(service.listar());
+    public List<ProductoTerminado> listar() {
+        return service.listar();
     }
 
     @PostMapping
-    public ResponseEntity<ProductoTerminado> crear(@RequestBody ProductoTerminado producto) {
-        return ResponseEntity.ok(service.crear(producto));
+    public ProductoTerminado guardar(@RequestBody ProductoTerminado producto) {
+        return service.guardar(producto);
+    }
+
+    @PutMapping("/{id}")
+    public ProductoTerminado actualizar(@PathVariable Long id, @RequestBody ProductoTerminado producto) {
+        return service.actualizar(id, producto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable Long id) {
         service.eliminar(id);
-        return ResponseEntity.noContent().build();
     }
 }

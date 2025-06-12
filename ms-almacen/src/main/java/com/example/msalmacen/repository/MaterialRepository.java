@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MaterialRepository extends JpaRepository<Material, Long> {
-    Optional<Material> findByNombreIgnoreCase(String nombre);
+    Optional<Material> findByNombreIgnoreCaseAndTipoIgnoreCaseAndUnidadIgnoreCase(String nombre, String tipo, String unidad);
 }

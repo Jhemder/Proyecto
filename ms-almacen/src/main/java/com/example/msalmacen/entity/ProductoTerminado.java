@@ -1,23 +1,23 @@
 package com.example.msalmacen.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 public class ProductoTerminado {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;
-    private Integer cantidadFabricada;
+    private String categoria;
+    private String unidad;
+    private int cantidad;
 
-    @ElementCollection
-    private List<MaterialUtilizado> materialesUtilizados;
+    // Opcional: para luego filtrar por fecha de creación
+    private String fechaRegistro;
 }
